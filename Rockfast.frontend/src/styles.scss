@@ -1,0 +1,155 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+
+.completed-calendar .p-datepicker .p-datepicker-header .p-datepicker-prev,
+.completed-calendar .p-datepicker .p-datepicker-header .p-datepicker-next {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* styles.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.p-datatable-gridlines {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.p-datatable-gridlines th, .p-datatable-gridlines td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.p-datatable-gridlines th {
+    background-color: #f2f2f2;
+}
+
+.p-datatable-gridlines td a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.p-datatable-gridlines td a:hover {
+    color: #1e87d6;
+}
+
+.p-blockui-overlay {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.p-blockui-message {
+    color: #333;
+}
+
+
+
+.pi-spinner {
+    font-size: 36px;
+    color: #3498db;
+}
+
+
+  
+  // Customize form styles
+  ::ng-deep .form-group {
+    margin-bottom: 20px;
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #495057;
+    }
+  
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      color: #495057;
+  
+      &:focus {
+        border-color: #007bff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+    }
+  
+    span[style='color: red;'] {
+      margin-left: 5px;
+      color: red;
+    }
+  }
+  
+  // Customize calendar styles
+  ::ng-deep .completed-calendar {
+    margin-top: 10px;
+  
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      color: #495057;
+  
+      &:focus {
+        border-color: #007bff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+    }
+  }
+  
+  .todo-container {
+    margin: 15px;
+    background-color: #f8f9fa; /* Light background color */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft box shadow */
+  }
+  
+  .todo-header {
+    color: #333;
+  }
+  
+  .toolbar-button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+    background-color: #f1f3f5; /* Alternating row background color */
+  }
+  
+  .p-datatable-striped .p-datatable-tbody > tr:hover {
+    background-color: #e2e6ea; /* Hovered row background color */
+  }
+
+

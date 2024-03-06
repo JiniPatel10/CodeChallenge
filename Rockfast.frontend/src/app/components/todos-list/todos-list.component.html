@@ -1,0 +1,134 @@
+<div class="todo-container">
+
+    <h3 class="todo-header">To do List</h3>
+
+    <p-toolbar styleClass="p-mb-4">
+
+        <div class="toolbar-button">
+            <button pButton pRipple label="Add New" icon="pi pi-plus" class="p-button-success p-mr-2"
+                (click)="addNewTodo()">
+            </button>
+
+        </div>
+    </p-toolbar>
+
+    <p-table #dt [value]="todosList" dataKey="id" styleClass="p-datatable-striped p-datatable-gridlines p-datatable-sm"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[5, 10, 20]" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '30rem' }">
+
+        <ng-template pTemplate="header">
+            <tr>
+
+                <th>Actions</th>
+
+                <th pSortableColumn="name">
+                    Name <p-sortIcon field="name"></p-sortIcon>
+                </th>
+                <th pSortableColumn="complete">
+                    Complete <p-sortIcon field="complete"></p-sortIcon>
+                </th>
+                <th pSortableColumn="dateCompleted">
+                    Date Completed <p-sortIcon field="dateCompleted"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-todo>
+            <tr>
+                <td>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" (click)="onEdit(todo)"
+                        class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" (click)="onDelete(todo)"
+                        class="p-button-rounded p-button-text p-button-danger"></button>
+
+                </td>
+                <td>{{todo.name}}</td>
+                <td><p-tag [value]="todo.complete == true ? 'Yes' : 'No'" [severity]="getSeverity(todo.complete)"
+                        [rounded]="true"></p-tag></td>
+                <td>{{todo.dateCompleted | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="4">No result found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-toast [life]="10000"></p-toast>
+
+
+<p-blockUI [blocked]="loading">
+    <i class="pi pi-spin pi-spinner" style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+</p-blockUI>
+
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+<p-dialog [(visible)]="newDialog" [style]="{width: '700px'}" header="To do details" [modal]="true" [draggable]="false"
+    #dialog styleClass="p-fluid" [closable]="false">
+
+    <ng-template pTemplate="content">
+        <form [formGroup]="todoForm">
+
+            <div class="form-group">
+                <div class="p-field">
+                    <label for="name">Name<span style="color: red;">*</span></label>
+                    <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="todo.name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="p-field dialogform">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="complete">Complete</label>
+                            <p-checkbox [(ngModel)]="todo.complete" (onChange)="isCompletedChanged(todo.complete)"
+                                name="complete" formControlName="complete" [binary]="true"
+                                class="formCheckbox"></p-checkbox>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="complete">Date Completed<span *ngIf="todo.complete"
+                                    style="color: red;">*</span></label>
+                            <p-calendar name="dateCompleted" inputId="dateCompleted" [maxDate]="today"
+                                dateFormat="dd/mm/yy" formControlName="dateCompleted" [(ngModel)]="todo.dateCompleted"
+                                [appendTo]="dialog" class="completed-calendar">
+                            </p-calendar>
+                            <span *ngIf="todo.complete">
+                                <span style="color: red;" *ngIf="todo.complete && !todo.dateCompleted">
+                                    Date Completed is required
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="p-field">
+                    <label for="users-dropdown">User<span style="color: red;">*</span></label>
+                    <p-dropdown [options]="usersOptions" formControlName="user" placeholder="Select a user"
+                        [(ngModel)]="todo.userId" optionLabel="key" optionValue="value" id="user-dropdown"
+                        [appendTo]="dialog" [filter]="true" filterBy="key" [showClear]="true">
+                    </p-dropdown>
+                    <span *ngIf="(todoForm.get('user').touched ||
+            todoForm.get('user').dirty) &&
+            todoForm.get('user').errors">
+                        <span style="color: red;" *ngIf="todoForm.get('user').errors">
+                            User Selection is required
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" style="margin-right: 5px;" icon="pi pi-times"
+            class="p-button-primary mr-2" (click)="hideDialog()">
+        </button>
+        <button pButton pRipple [disabled]="
+                todoForm.invalid" label="Save" icon="pi pi-check" class="p-button-primary mr-2" (click)="submiTodo()">
+        </button>
+    </ng-template>
+</p-dialog>

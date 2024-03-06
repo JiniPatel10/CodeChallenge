@@ -1,0 +1,90 @@
+<div style="margin: 15px;" class="users-container">
+    <div style="display: flex;">
+        <h3>Users List</h3>
+        <button class="p-button-primary userAddButton" pButton pRipple label="Add new" (click)="addNew()"></button>
+    </div>
+
+
+    <p-table [value]="usersList" styleClass="p-datatable-striped p-datatable-gridlines" editMode="row"
+        [tableStyle]="{ 'max-width': '400px' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 50%;">Actions</th>
+                <th style="width: 50%;">Name</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="user">
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                            (click)="onRowEditInit(user)" class="p-button-rounded p-button-text"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow icon="pi pi-check"
+                            (click)="onRowEditSave(user)"
+                            class="p-button-rounded p-button-text p-button-success mr-2"></button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow icon="pi pi-times"
+                            (click)="onRowEditCancel(user, ri)"
+                            class="p-button-rounded p-button-text p-button-danger"></button>
+                        <button *ngIf="!editing" pButton pRipple type="button" icon="pi pi-trash"
+                            (click)="onRowDelete(user, ri)"
+                            class="p-button-rounded p-button-text p-button-danger"></button>
+
+                    </div>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input pInputText type="text" [(ngModel)]="user.name">
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            <a [routerLink]="['/todos', user.id]">{{ user.name }}</a>
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="2">No Users found.</td>
+            </tr>
+        </ng-template>
+
+    </p-table>
+</div>
+
+<p-blockUI [blocked]="loading">
+    <i class="pi pi-spin pi-spinner" style="position:absolute;top:50%;left:47%;color: black;font-size: 100px;"></i>
+</p-blockUI>
+
+<p-toast [life]="10000"></p-toast>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+
+<p-dialog [(visible)]="newDialog" [style]="{width: '600px'}" header="User Details" [modal]="true" styleClass="p-fluid"
+    [closable]="false">
+    <ng-template pTemplate="content">
+        <form novalidate [formGroup]="userForm">
+            <div class="form-group p-field">
+                <label for="name">Name<span style="color: red;">*</span></label>
+                <input type="text" pInputText id="name" formControlName="name" [(ngModel)]="user.name" required
+                    autofocus />
+                <span *ngIf="(userForm.get('name').touched ||
+            userForm.get('name').dirty) &&
+            userForm.get('name').errors">
+                    <span style="color: red;" *ngIf="userForm.get('name').errors">
+                        Name must be maximum 100 characters long and is required
+                    </span>
+                </span>
+            </div>
+
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-primary mr-2" (click)="hideDialog()">
+        </button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-primary mr-2"
+            [disabled]="userForm.invalid" (click)="submitUser()">
+        </button>
+    </ng-template>
+</p-dialog>
